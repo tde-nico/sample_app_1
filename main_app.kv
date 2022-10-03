@@ -1,0 +1,134 @@
+#:kivy 2.0.0
+
+<Touch>:
+	MDNavigationLayout:
+		ScreenManager:
+			id: screen_manager
+
+			# HOME
+
+			MDScreen:
+				name: "home"
+				BoxLayout:
+					orientation: "vertical"
+					MDTopAppBar:
+						title: app.title
+						elevation: 10
+						left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
+					GridLayout:
+						cols: 1
+						padding: '5dp'
+					MDBoxLayout:
+						size_hint_y: .9
+
+
+			# SETTINGS
+
+			MDScreen:
+				name: "settings"
+				BoxLayout:
+					orientation: "vertical"
+					MDTopAppBar:
+						title: "Settings"
+						elevation: 10
+						left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
+					GridLayout:
+						cols: 1
+						padding: '20dp'
+
+						MDBoxLayout:
+							padding: '10dp'
+							orientation: "horizontal"
+							size_hint_y: .1
+							MDLabel:
+								text: "Dark mode"
+								pos_hint: {'x':0.1, 'y':0}
+							MDSwitch:
+								id: theme
+								pos_hint: {'x':0.9, 'y':0}
+								on_active: app.settings.change_theme()
+
+						MDBoxLayout:
+							padding: '10dp'
+							orientation: "horizontal"
+							size_hint_y: .1
+							MDLabel:
+								text: "Palette"
+								pos_hint: {'x':0.1, 'y':0}
+							MDDropDownItem:
+								id: palette
+								pos_hint: {'x':0.9, 'y':0.2}
+								text: ''
+								on_release: app.settings.palette_menu.open()
+
+						MDBoxLayout:
+							padding: '10dp'
+							orientation: "horizontal"
+							size_hint_y: .1
+							MDLabel:
+								text: "Download Folder"
+								pos_hint: {'x':0.1, 'y':0}
+							MDDropDownItem:
+								id: download_folder
+								pos_hint: {'x':0.9, 'y':0.2}
+								text: ''
+								on_release: app.settings.file_manager_open()
+
+						MDBoxLayout:
+							size_hint_y: .5
+
+						MDBoxLayout:
+							orientation: "horizontal"
+							size_hint_y: .1
+							MDBoxLayout:
+								size_hint_y: .4
+							MDFillRoundFlatButton:
+								text: "Reset Default Settings"
+								on_press: app.settings.reset()
+							MDBoxLayout:
+								size_hint_y: .4
+
+		# NAV DRAWER
+
+		MDNavigationDrawer:
+			id: nav_drawer
+			radius: (0, 16, 16, 0) if self.anchor == "left" else (16, 0, 0, 16)
+			BoxLayout:
+				orientation: "vertical"
+				padding: "8dp"
+				spacing: "8dp"
+				MDLabel:
+					text: app.title
+					font_style: "Button"
+					size_hint_y: None
+					height: self.texture_size[1]
+				ScrollView:
+					MDList:
+
+						MDNavigationDrawerItem:
+							text: "Home"
+							icon: "home"
+							theme_text_color: 'Primary'
+							on_press: app.home.open()
+
+
+						MDNavigationDrawerDivider:
+
+						MDNavigationDrawerItem:
+							text: "Settings"
+							icon: "cog"
+							theme_text_color: 'Primary'
+							on_press: app.settings.open()
+
+						MDNavigationDrawerItem:
+							text: "Info"
+							icon: "information-outline"
+							theme_text_color: 'Primary'
+							on_press: app.show_info()
+
+						MDNavigationDrawerItem:
+							text: "Exit"
+							icon: "exit-to-app"
+							theme_text_color: 'Primary'
+							on_press: app.exit()
+
